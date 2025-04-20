@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modernbank-customer
+  namespace: modernbank
+  labels:
+    app: modernbank-customer
+    project: modernbank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modernbank-customer
+      project: modernbank
+  template:
+    metadata:
+      labels:
+        app: modernbank-customer
+        project: modernbank
+    spec:
+      serviceAccountName: modernbank-customer-sa
+      containers:
+      - name: modernbank-customer
+        image: 216989108269.dkr.ecr.ap-northeast-2.amazonaws.com/modernbank-customer:latest  # ECR 이미지 주소
+        ports:
+        - containerPort: 8083
+        env:
+        - name: ACCOUNT_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: account-service
+        - name: B2BT_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: b2bt-service
+        - name: CUSTOMER_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: customer-service
+        - name: CQRS_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: cqrs-service
+        - name: TRANSFER_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: transfer-service
+        - name: KAFKA_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: kafka-service
+        - name: POSTGRES_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-customer-endpoint
+        - name: POSTGRES_SERVICE_USER
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-customer-user
+        - name: POSTGRES_SERVICE_PASS
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-customer-pass
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"

@@ -1,0 +1,3 @@
+sudo docker build -t modernbank-account:latest .
+sudo docker tag modernbank-account:latest 216989108269.dkr.ecr.ap-northeast-2.amazonaws.com/modernbank-account:latest
+sudo docker push 216989108269.dkr.ecr.ap-northeast-2.amazonaws.com/modernbank-account:latest

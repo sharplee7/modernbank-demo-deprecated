@@ -1,0 +1,46 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "AccountApplication",
+            "request": "launch",
+            "mainClass": "com.modernbank.account.AccountApplication",
+            "projectName": "modernbank_account"
+        },
+        {
+            "type": "java",
+            "name": "B2BTransferApplication",
+            "request": "launch",
+            "mainClass": "com.modernbank.b2bt.B2BTransferApplication",
+            "projectName": "modernbank_b2bt"
+        },
+        {
+            "type": "java",
+            "name": "CQRSApplication",
+            "request": "launch",
+            "mainClass": "com.modernbank.cqrs.CQRSApplication",
+            "projectName": "modernbank_cqrs"
+        },
+        {
+            "type": "java",
+            "name": "CustomerApplication",
+            "request": "launch",
+            "mainClass": "com.modernbank.customer.CustomerApplication",
+            "projectName": "modernbank_customer",
+        },
+        {
+            "type": "java",
+            "name": "ProductApplication",
+            "request": "launch",
+            "mainClass": "com.modernbank.product.ProductApplication",
+            "projectName": "modernbank_product"
+        },
+        {
+            "type": "java",
+            "name": "TransferApplication",
+            "request": "launch",
+            "mainClass": "com.modernbank.transfer.TransferApplication",
+            "projectName": "modernbank_transfer"
+        }
+    ]
+}

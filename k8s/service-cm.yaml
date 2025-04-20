@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: modernbank-services-cm
+  namespace: modernbank
+  labels:
+    project: modernbank
+data:
+  account-service: modernbank-account:8081
+  b2bt-service: modernbank-b2bt:8082
+  customer-service: modernbank-customer:8083
+  cqrs-service: modernbank-cqrs:8084
+  transfer-service: modernbank-transfer:8085
+  product-service: modernbank-product:8086
+  user-service: modernbank-user:8091
+  # kafka-service-old: b-3.composablebankmsk.cbc0p1.c2.kafka.ap-northeast-2.amazonaws.com:9098,b-2.composablebankmsk.cbc0p1.c2.kafka.ap-northeast-2.amazonaws.com:9098,b-1.composablebankmsk.cbc0p1.c2.kafka.ap-northeast-2.amazonaws.com:9098
+  kafka-service: b-1.composablebankkaf.8wl1f1.c2.kafka.ap-northeast-2.amazonaws.com:9092,b-3.composablebankkaf.8wl1f1.c2.kafka.ap-northeast-2.amazonaws.com:9092,b-2.composablebankkaf.8wl1f1.c2.kafka.ap-northeast-2.amazonaws.com:9092
+  # postgres-service: composable-db-1.cluster-cre4cy420rgv.ap-northeast-2.rds.amazonaws.com:5432
+  postgres-service: composable-db-1-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com:5432
+  postgres-user: postgres
+  postgres-pass: "orI5(tBu94|Uu1-AIyNLVB9l95X?"
+  # TODO utilize secrets manager
+  postgres-account-endpoint: modernbank-account-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com
+  postgres-account-user: postgres
+  postgres-account-pass: admin1234
+  postgres-cqrs-endpoint: modernbank-cqrs-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com
+  postgres-cqrs-user: postgres
+  postgres-cqrs-pass: admin1234
+  postgres-customer-endpoint: modernbank-customer-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com
+  postgres-customer-user: postgres
+  postgres-customer-pass: admin1234
+  postgres-transfer-endpoint: modernbank-transfer-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com
+  postgres-transfer-user: postgres
+  postgres-transfer-pass: admin1234
+  postgres-user-endpoint: modernbank-user-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com
+  postgres-user-user: postgres
+  postgres-user-pass: admin1234
+  # TODO utilize secrets manager
+  jwt-secret: 67EL7cJ0U4OJ1wdqt+2w3Nqvy5HB9wwhx+DMsXMz9aY=
+  ddb-service: https://dynamodb.ap-northeast-2.amazonaws.com
+  ddb-access-key: accesskey
+  ddb-secret-key: secretKey

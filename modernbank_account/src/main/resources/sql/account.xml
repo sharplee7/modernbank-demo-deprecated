@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.modernbank.account.domain.repository.AccountRepository">
+    <select id="selectAccount" resultType="com.modernbank.account.domain.entity.Account"
+            parameterType="com.modernbank.account.domain.entity.Account">
+ 		SELECT A.ACNT_NO, A.CSTM_ID, A.CSTM_NM, A.ACNT_NM, A.NEW_DTM, H.ACNT_BLNC
+ 		FROM TB_ACNT A
+ 		   , (SELECT ACNT_BLNC, ACNT_NO
+				FROM TB_TRNS_HST H
+				WHERE ACNT_NO IN (SELECT ACNT_NO FROM TB_ACNT WHERE ACNT_NO = #{acntNo})
+		  		AND SEQ = (SELECT MAX(SEQ) FROM TB_TRNS_HST WHERE ACNT_NO = H.ACNT_NO AND STS_CD = '1')) H
+ 		WHERE A.ACNT_NO = H.ACNT_NO
+ 		AND   A.ACNT_NO = #{acntNo}
+ 	</select>
+    <select id="selectAccountList" resultType="com.modernbank.account.domain.entity.Account"
+            parameterType="com.modernbank.account.domain.entity.Account">
+ 		SELECT A.ACNT_NO, A.CSTM_ID, A.CSTM_NM, A.ACNT_NM, A.NEW_DTM, H.ACNT_BLNC
+ 		FROM TB_ACNT A
+ 			, (SELECT ACNT_BLNC, ACNT_NO
+				FROM TB_TRNS_HST H
+				WHERE ACNT_NO IN (SELECT ACNT_NO FROM TB_ACNT WHERE CSTM_ID = #{cstmId})
+		  		AND SEQ = (SELECT MAX(SEQ) FROM TB_TRNS_HST WHERE ACNT_NO = H.ACNT_NO AND STS_CD = '1')) H
+ 		WHERE A.ACNT_NO = H.ACNT_NO
+		AND CSTM_ID = #{cstmId}
+ 	</select>
+    <insert id="insertAccount" parameterType="com.modernbank.account.domain.entity.Account">
+ 		INSERT INTO TB_ACNT(ACNT_NO, CSTM_ID, CSTM_NM, ACNT_NM, NEW_DTM)
+ 		VALUES(#{acntNo}, #{cstmId}, #{cstmNm}, #{acntNm}, TO_CHAR(CURRENT_TIMESTAMP,'YYYY-MM-DD HH24:MI:SS'))
+ 	</insert>
+
+	<!-- 거래완료데이터의 마지막 잔액조회	-->
+    <select id="selectCurrentAccountBalance" resultType="java.lang.Long"
+            parameterType="com.modernbank.account.domain.entity.TransactionHistory">
+ 		SELECT ACNT_BLNC 
+ 		FROM TB_TRNS_HST 
+ 		WHERE ACNT_NO = #{acntNo}
+ 		  AND SEQ = (SELECT COALESCE(MAX(SEQ),0) FROM TB_TRNS_HST WHERE ACNT_NO = #{acntNo} AND STS_CD = '1')
+ 	</select>
+
+	<!-- 거래이력저장 시 seq 반환 -->
+	<insert id="insertTransactionHistoryData" parameterType="com.modernbank.account.domain.entity.TransactionHistory">
+		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
+			SELECT NEXTVAL('SEQ_ACCOUNT_TRANSACTION_HISTORY')
+		</selectKey>
+		INSERT INTO TB_TRNS_HST(ACNT_NO, SEQ, DIV_CD, STS_CD, TRNS_AMT, ACNT_BLNC, TRNS_BRNCH, TRNS_DTM)
+		VALUES(#{acntNo}, ${seq}, #{divCd}, #{stsCd}, #{trnsAmt}, #{acntBlnc}, #{trnsBrnch},
+		TO_CHAR(CURRENT_TIMESTAMP,'YYYY-MM-DD HH24:MI:SS'))
+	</insert>
+
+    <select id="selectTransactionHistoryList" resultType="com.modernbank.account.domain.entity.TransactionHistory"
+            parameterType="com.modernbank.account.domain.entity.TransactionHistory">
+ 		SELECT ACNT_NO, SEQ, DIV_CD, STS_CD, TRNS_AMT, ACNT_BLNC, TRNS_BRNCH, TRNS_DTM 
+ 		FROM TB_TRNS_HST 
+ 		WHERE ACNT_NO = #{acntNo}
+ 		ORDER BY ACNT_NO 
+ 	</select>
+    <update id="updateTransactionHistory" parameterType="com.modernbank.account.domain.entity.TransactionHistory">
+        UPDATE TB_TRNS_HST
+        SET STS_CD = #{stsCd}
+        WHERE ACNT_NO = #{acntNo}
+        AND SEQ = ${seq};
+
+        UPDATE TB_TRNS_HST
+        SET STS_CD = #{stsCd}
+        <if test="stsCd != '2'">
+            ,ACNT_BLNC = (SELECT ACNT_BLNC
+            FROM TB_TRNS_HST
+            WHERE ACNT_NO = #{acntNo}
+            AND SEQ = (SELECT COALESCE(MAX(SEQ),0) FROM TB_TRNS_HST WHERE ACNT_NO = #{acntNo} AND STS_CD = '1')
+            )
+        </if>
+        WHERE ACNT_NO = #{acntNo}
+        AND SEQ = ${seq};
+    </update>
+    <select id="selectMaxSeq" resultType="java.lang.Integer"
+            parameterType="com.modernbank.account.domain.entity.TransactionHistory">
+ 		SELECT COALESCE(MAX(SEQ),0)
+ 		FROM TB_TRNS_HST 
+ 		WHERE ACNT_NO = #{acntNo}
+ 	</select>
+</mapper>

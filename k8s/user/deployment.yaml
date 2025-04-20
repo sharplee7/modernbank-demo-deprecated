@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modernbank-user
+  namespace: modernbank
+  labels:
+    app: modernbank-user
+    project: modernbank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modernbank-user
+      project: modernbank
+  template:
+    metadata:
+      labels:
+        app: modernbank-user
+        project: modernbank
+    spec:
+      serviceAccountName: modernbank-user-sa
+      containers:
+      - name: modernbank-user
+        image: 216989108269.dkr.ecr.ap-northeast-2.amazonaws.com/modernbank-user:latest  # ECR 이미지 주소
+        ports:
+        - containerPort: 8091
+        env:
+        - name: POSTGRES_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-user-endpoint
+        - name: POSTGRES_SERVICE_USER
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-user-user
+        - name: POSTGRES_SERVICE_PASS
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-user-pass
+        - name: SERVER_PORT
+          value: ":8091"
+        - name: DATABASE_URL
+          value: "postgres://$(POSTGRES_SERVICE_USER):$(POSTGRES_SERVICE_PASS)@$(POSTGRES_SERVICE_ADDR)/users?sslmode=disable"
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: jwt-secret
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.modernbank.transfer.domain.repository.TransferRepository">
+	<insert id="insertTransferHistory" parameterType="com.modernbank.transfer.domain.entity.TransferHistory">
+	    WITH MERGE AS (
+		UPDATE TB_TRNF_HST A
+		SET STS_CD = #{stsCd}
+		WHERE A.CSTM_ID = #{cstmId}
+			AND A.SEQ = ${seq}
+		RETURNING A.*)
+		INSERT INTO TB_TRNF_HST(CSTM_ID, SEQ, DIV_CD, STS_CD, DPST_ACNT_NO, WTHD_ACNT_NO, SND_MM, RCV_MM, RCV_CSTM_NM, TRNF_AMT, TRNF_DTM)
+		SELECT #{cstmId}, ${seq}, #{divCd}, #{stsCd}, #{dpstAcntNo}, #{wthdAcntNo}, #{sndMm}, #{rcvMm}, #{rcvCstmNm}, #{trnfAmt}, TO_CHAR(CURRENT_TIMESTAMP,'YYYY-MM-DD HH24:MI:SS')
+		WHERE (#{cstmId}, ${seq}) NOT IN (SELECT CSTM_ID, SEQ FROM MERGE);
+	</insert>
+	<select id="selectTransferHistoryList" parameterType="com.modernbank.transfer.domain.entity.TransferHistory" resultType="com.modernbank.transfer.domain.entity.TransferHistory">
+		SELECT CSTM_ID, SEQ, DIV_CD, STS_CD, DPST_ACNT_NO, WTHD_ACNT_NO, SND_MM, RCV_MM, RCV_CSTM_NM, TRNF_AMT, TRNF_DTM
+		FROM TB_TRNF_HST
+		WHERE CSTM_ID = #{cstmId}
+	</select>
+	<insert id="insertTransferLimit" parameterType="com.modernbank.transfer.domain.entity.TransferLimit">
+		INSERT INTO TB_TRNF_LMT(CSTM_ID, ONE_TM_TRNF_LMT, ONE_DY_TRNF_LMT)
+		VALUES(#{cstmId}, #{oneTmTrnfLmt}, #{oneDyTrnfLmt})
+	</insert>
+	<select id="selectTransferLimit" parameterType="com.modernbank.transfer.domain.entity.TransferLimit" resultType="com.modernbank.transfer.domain.entity.TransferLimit">
+		SELECT CSTM_ID, ONE_TM_TRNF_LMT, ONE_DY_TRNF_LMT
+		FROM TB_TRNF_LMT
+		WHERE CSTM_ID = #{cstmId}
+	</select>
+	<select id="selectTotalTransferAmountPerDay" parameterType="com.modernbank.transfer.domain.entity.TransferLimit" resultType="java.lang.Long">
+		SELECT COALESCE(SUM(TRNF_AMT),0)
+		FROM TB_TRNF_HST
+		WHERE CSTM_ID = #{cstmId}
+		  AND TO_DATE(TRNF_DTM,'YYYY-MM-DD') = CURRENT_DATE 
+	</select>
+	<select id="selectMaxSeq" parameterType="com.modernbank.transfer.domain.entity.TransferHistory" resultType="java.lang.Integer">
+		SELECT COALESCE(MAX(SEQ),0)
+		FROM TB_TRNF_HST
+		WHERE CSTM_ID = #{cstmId}
+	</select>
+</mapper>

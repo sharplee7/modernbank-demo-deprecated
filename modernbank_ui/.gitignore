@@ -1,0 +1,41 @@
+### gradle ###
+**/build/**
+
+## compile ##
+**/bin/**
+**/libs/**
+
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### MAC OS ###
+.DS_Store
+
+### Garbage file ###
+*.pid
+*.log
+
+### next.js ###
+**/node_modules/**
+**/.next/**

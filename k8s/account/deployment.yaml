@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modernbank-account
+  namespace: modernbank
+  labels:
+    app: modernbank-account
+    project: modernbank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modernbank-account
+      project: modernbank
+  template:
+    metadata:
+      labels:
+        app: modernbank-account
+        project: modernbank
+    spec:
+      serviceAccountName: modernbank-account-sa
+      containers:
+      - name: modernbank-account
+        image: 216989108269.dkr.ecr.ap-northeast-2.amazonaws.com/modernbank-account:latest  # ECR 이미지 주소
+        ports:
+        - containerPort: 8081
+        env:
+        # - name: ACCOUNT_SERVICE_ADDR
+        #   value: "modernbank-account:8081"
+        # - name: B2BT_SERVICE_ADDR
+        #   value: "modernbank-b2bt:8082"
+        # - name: CUSTOMER_SERVICE_ADDR
+        #   value: "modernbank-customer:8083"
+        # - name: CQRS_SERVICE_ADDR
+        #   value: "modernbank-cqrs:8084"
+        # - name: TRANSFER_SERVICE_ADDR
+        #   value: "modernbank-transfer:8085"
+        # - name: KAFKA_SERVICE_ADDR
+        #   value: "b-3.composablebankmsk.cbc0p1.c2.kafka.ap-northeast-2.amazonaws.com:9098,b-2.composablebankmsk.cbc0p1.c2.kafka.ap-northeast-2.amazonaws.com:9098,b-1.composablebankmsk.cbc0p1.c2.kafka.ap-northeast-2.amazonaws.com:9098"
+        # - name: POSTGRES_SERVICE_ADDR
+        #   value: "composable-db-1.cluster-cre4cy420rgv.ap-northeast-2.rds.amazonaws.com:5432"
+        - name: ACCOUNT_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: account-service
+        - name: B2BT_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: b2bt-service
+        - name: CUSTOMER_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: customer-service
+        - name: CQRS_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: cqrs-service
+        - name: TRANSFER_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: transfer-service
+        - name: KAFKA_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: kafka-service
+        - name: POSTGRES_SERVICE_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-account-endpoint
+        - name: POSTGRES_SERVICE_USER
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-account-user
+        - name: POSTGRES_SERVICE_PASS
+          valueFrom:
+            configMapKeyRef:
+              name: modernbank-services-cm
+              key: postgres-account-pass
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"

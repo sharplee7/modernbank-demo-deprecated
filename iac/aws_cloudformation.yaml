@@ -1,0 +1,1066 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Modern Bank Infrastructure with MSK, EKS, and Aurora
+
+Parameters:
+  Environment:
+    Type: String
+    Default: Production
+    AllowedValues:
+      - Production
+      - Development
+      - Staging
+    Description: Environment type for the stack
+
+  Project:
+    Type: String
+    Default: MainInfra
+    Description: Project name for resource tagging
+
+Resources:
+  #=========================================================================
+  # VPC Resources
+  #=========================================================================
+
+  # Workshop VPC
+  WorkshopVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: workshop-vpc
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # Workshop VPC Internet Gateway
+  WorkshopIGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: workshop-igw
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  WorkshopIGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref WorkshopIGW
+      VpcId: !Ref WorkshopVPC
+
+  # Workshop VPC Public Subnets
+  WorkshopPublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: us-east-1a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: workshop-public-subnet-1
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  WorkshopPublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: us-east-1b
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: workshop-public-subnet-2
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # Workshop VPC Private Application Subnets
+  WorkshopPrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: workshop-private-subnet-1
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  WorkshopPrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: us-east-1b
+      Tags:
+        - Key: Name
+          Value: workshop-private-subnet-2
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # Workshop VPC Database Subnets
+  WorkshopDBSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: workshop-db-subnet-1
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  WorkshopDBSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      CidrBlock: 10.0.5.0/24
+      AvailabilityZone: us-east-1b
+      Tags:
+        - Key: Name
+          Value: workshop-db-subnet-2
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # MSK VPC
+  MSKVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.1.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: msk-vpc
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # MSK VPC Subnets
+  MSKSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MSKVPC
+      CidrBlock: 10.1.0.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: msk-subnet-1
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  MSKSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MSKVPC
+      CidrBlock: 10.1.1.0/24
+      AvailabilityZone: us-east-1b
+      Tags:
+        - Key: Name
+          Value: msk-subnet-2
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  MSKSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MSKVPC
+      CidrBlock: 10.1.2.0/24
+      AvailabilityZone: us-east-1c
+      Tags:
+        - Key: Name
+          Value: msk-subnet-3
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # VPC Peering Connection
+  VPCPeeringConnection:
+    Type: AWS::EC2::VPCPeeringConnection
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      PeerVpcId: !Ref MSKVPC
+      Tags:
+        - Key: Name
+          Value: workshop-msk-peering
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # Route Tables
+  WorkshopPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      Tags:
+        - Key: Name
+          Value: workshop-public-rt
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  WorkshopPrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref WorkshopVPC
+      Tags:
+        - Key: Name
+          Value: workshop-private-rt
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  MSKRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MSKVPC
+      Tags:
+        - Key: Name
+          Value: msk-rt
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  # Routes
+  WorkshopPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: WorkshopIGWAttachment
+    Properties:
+      RouteTableId: !Ref WorkshopPublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref WorkshopIGW
+
+  WorkshopToMSKRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref WorkshopPrivateRouteTable
+      DestinationCidrBlock: 10.1.0.0/16
+      VpcPeeringConnectionId: !Ref VPCPeeringConnection
+
+  MSKToWorkshopRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref MSKRouteTable
+      DestinationCidrBlock: 10.0.0.0/16
+      VpcPeeringConnectionId: !Ref VPCPeeringConnection
+
+  # Route Table Associations
+  WorkshopPublicSubnet1RTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref WorkshopPublicSubnet1
+      RouteTableId: !Ref WorkshopPublicRouteTable
+
+  WorkshopPublicSubnet2RTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref WorkshopPublicSubnet2
+      RouteTableId: !Ref WorkshopPublicRouteTable
+
+  WorkshopPrivateSubnet1RTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref WorkshopPrivateSubnet1
+      RouteTableId: !Ref WorkshopPrivateRouteTable
+
+  WorkshopPrivateSubnet2RTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref WorkshopPrivateSubnet2
+      RouteTableId: !Ref WorkshopPrivateRouteTable
+
+  MSKSubnet1RTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref MSKSubnet1
+      RouteTableId: !Ref MSKRouteTable
+
+  MSKSubnet2RTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref MSKSubnet2
+      RouteTableId: !Ref MSKRouteTable
+
+  MSKSubnet3RTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref MSKSubnet3
+      RouteTableId: !Ref MSKRouteTable
+
+  # NAT Gateway Elastic IP
+  WorkshopNATEIP:
+    Type: AWS::EC2::EIP
+
+  # NAT Gateway
+  WorkshopNATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt WorkshopNATEIP.AllocationId
+      SubnetId: !Ref WorkshopPublicSubnet1
+      Tags:
+        - Key: Name
+          Value: workshop-nat-gateway
+
+  WorkshopPrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref WorkshopPrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref WorkshopNATGateway
+
+  #=========================================================================
+  # Security Groups
+  #=========================================================================
+  EKSControlPlaneSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for EKS control plane
+      VpcId: !Ref WorkshopVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 10250
+          ToPort: 10250
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: eks-control-plane-sg
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  EKSNodeSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for EKS worker nodes
+      VpcId: !Ref WorkshopVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 1024
+          ToPort: 65535
+          CidrIp: 10.0.0.0/16
+        - IpProtocol: tcp
+          FromPort: 10250
+          ToPort: 10250
+          SourceSecurityGroupId: !Ref EKSControlPlaneSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref EKSIngressSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          SourceSecurityGroupId: !Ref EKSIngressSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: eks-node-sg
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  EKSIngressSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for EKS Ingress traffic
+      VpcId: !Ref WorkshopVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: eks-ingress-sg
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Aurora PostgreSQL
+      VpcId: !Ref WorkshopVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 10.0.0.0/16
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 10.0.0.0/16
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: aurora-security-group
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  MSKSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for MSK cluster
+      VpcId: !Ref MSKVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 9092
+          ToPort: 9092
+          CidrIp: 10.0.0.0/16
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: msk-security-group
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  #=========================================================================
+  # EKS Cluster Resources
+  #=========================================================================
+
+  EKSClusterRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: eks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+        - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+
+  EKSNodeGroupRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+
+  EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: modern-bank-cluster
+      Version: '1.31'
+      RoleArn: !GetAtt EKSClusterRole.Arn
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - !Ref EKSControlPlaneSecurityGroup
+          - !Ref EKSIngressSecurityGroup
+        SubnetIds:
+          - !Ref WorkshopPublicSubnet1
+          - !Ref WorkshopPublicSubnet2
+          - !Ref WorkshopPrivateSubnet1
+          - !Ref WorkshopPrivateSubnet2
+      Logging:
+        ClusterLogging:
+          EnabledTypes:
+            - Type: api
+            - Type: audit
+            - Type: authenticator
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  EKSFrontendNodeGroup:
+    Type: AWS::EKS::Nodegroup
+    Properties:
+      ClusterName: !Ref EKSCluster
+      NodeRole: !GetAtt EKSNodeGroupRole.Arn
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 1
+        MaxSize: 2
+      Subnets:
+        - !Ref WorkshopPublicSubnet1
+        - !Ref WorkshopPublicSubnet2
+      InstanceTypes:
+        - t3.medium
+      Labels:
+        role: frontend
+      Taints:
+        - Effect: NO_SCHEDULE
+          Key: dedicated
+          Value: frontend
+      Tags:
+        Environment: !Ref Environment
+        Project: !Ref Project
+        NodeType: frontend
+
+  EKSBackendNodeGroup:
+    Type: AWS::EKS::Nodegroup
+    Properties:
+      ClusterName: !Ref EKSCluster
+      NodeRole: !GetAtt EKSNodeGroupRole.Arn
+      ScalingConfig:
+        MinSize: 2
+        DesiredSize: 2
+        MaxSize: 4
+      Subnets:
+        - !Ref WorkshopPrivateSubnet1
+        - !Ref WorkshopPrivateSubnet2
+      InstanceTypes:
+        - t3.medium
+      Labels:
+        role: backend
+      Taints:
+        - Effect: NO_SCHEDULE
+          Key: dedicated
+          Value: backend
+      Tags:
+        Environment: !Ref Environment
+        Project: !Ref Project
+        NodeType: backend
+
+  #=========================================================================
+  # Aurora PostgreSQL Resources (5 Clusters)
+  #=========================================================================
+
+  AuroraDBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet group for Aurora PostgreSQL
+      SubnetIds:
+        - !Ref WorkshopDBSubnet1
+        - !Ref WorkshopDBSubnet2
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraParameterGroup:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      Family: aurora-postgresql14
+      Description: Parameter group for Aurora PostgreSQL
+      Parameters:
+        shared_preload_libraries: auto_explain,pg_stat_statements
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub ${AWS::StackName}-aurora-secret
+      SecretString: '{"username": "postgres", "password": "admin1234"}'
+
+  #=========================================================================
+  # Aurora Cluster & Instance Definitions
+  #=========================================================================
+
+  AuroraClusterAccount:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: 14.13
+      DatabaseName: account
+      DBClusterIdentifier: modernbank-account
+      Port: 5432
+      StorageEncrypted: true
+      DeletionProtection: false
+      MasterUsername: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:password}}'
+      DBSubnetGroupName: !Ref AuroraDBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref AuroraSecurityGroup
+      BackupRetentionPeriod: 7
+      EnableCloudwatchLogsExports:
+        - postgresql
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceAccount1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterAccount
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceAccount2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterAccount
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  #=========================================================================
+
+  AuroraClusterCqrs:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: 14.13
+      DatabaseName: cqrs
+      DBClusterIdentifier: modernbank-cqrs
+      Port: 5432
+      StorageEncrypted: true
+      DeletionProtection: false
+      MasterUsername: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:password}}'
+      DBSubnetGroupName: !Ref AuroraDBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref AuroraSecurityGroup
+      BackupRetentionPeriod: 7
+      EnableCloudwatchLogsExports:
+        - postgresql
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceCqrs1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterCqrs
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceCqrs2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterCqrs
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  #=========================================================================
+
+  # AuroraClusterCustomer
+  AuroraClusterCustomer:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: 14.13
+      DatabaseName: customer
+      DBClusterIdentifier: modernbank-customer
+      Port: 5432
+      StorageEncrypted: true
+      DeletionProtection: false
+      MasterUsername: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:password}}'
+      DBSubnetGroupName: !Ref AuroraDBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref AuroraSecurityGroup
+      BackupRetentionPeriod: 7
+      EnableCloudwatchLogsExports:
+        - postgresql
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceCustomer1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterCustomer
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceCustomer2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterCustomer
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  #=========================================================================
+  # AuroraClusterTransfer (modernbank-transfer)
+  #=========================================================================
+
+  AuroraClusterTransfer:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: 14.13
+      DatabaseName: transfer
+      DBClusterIdentifier: modernbank-transfer
+      Port: 5432
+      StorageEncrypted: true
+      DeletionProtection: false
+      MasterUsername: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:password}}'
+      DBSubnetGroupName: !Ref AuroraDBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref AuroraSecurityGroup
+      BackupRetentionPeriod: 7
+      EnableCloudwatchLogsExports:
+        - postgresql
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceTransfer1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterTransfer
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceTransfer2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterTransfer
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  #=========================================================================
+  # AuroraClusterUser (modernbank-user)
+  #=========================================================================
+
+  AuroraClusterUser:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: 14.13
+      DatabaseName: users
+      DBClusterIdentifier: modernbank-user
+      Port: 5432
+      StorageEncrypted: true
+      DeletionProtection: false
+      MasterUsername: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${AuroraSecret}:SecretString:password}}'
+      DBSubnetGroupName: !Ref AuroraDBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref AuroraSecurityGroup
+      BackupRetentionPeriod: 7
+      EnableCloudwatchLogsExports:
+        - postgresql
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceUser1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterUser
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  AuroraInstanceUser2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: aurora-postgresql
+      DBClusterIdentifier: !Ref AuroraClusterUser
+      DBInstanceClass: db.r5.large
+      DBParameterGroupName: !Ref AuroraParameterGroup
+      MonitoringInterval: 0
+      EnablePerformanceInsights: true
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+  #=========================================================================
+  # MSK Cluster Resources
+  #=========================================================================
+
+  MSKCluster:
+    Type: AWS::MSK::Cluster
+    Properties:
+      ClusterName: modernbank-kafka
+      KafkaVersion: 2.8.1
+      NumberOfBrokerNodes: 3
+      BrokerNodeGroupInfo:
+        InstanceType: kafka.m5.large
+        ClientSubnets:
+          - !Ref MSKSubnet1
+          - !Ref MSKSubnet2
+          - !Ref MSKSubnet3
+        SecurityGroups:
+          - !Ref MSKSecurityGroup
+        StorageInfo:
+          EBSStorageInfo:
+            VolumeSize: 100
+      EncryptionInfo:
+        EncryptionInTransit:
+          ClientBroker: PLAINTEXT
+          InCluster: true
+      EnhancedMonitoring: PER_BROKER
+      OpenMonitoring:
+        Prometheus:
+          JmxExporter:
+            EnabledInBroker: true
+          NodeExporter:
+            EnabledInBroker: true
+      LoggingInfo:
+        BrokerLogs:
+          CloudWatchLogs:
+            Enabled: true
+            LogGroup: !Ref MSKLogGroup
+      Tags:
+        Environment: !Ref Environment
+        Project: !Ref Project
+
+  MSKLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/msk/${AWS::StackName}
+      RetentionInDays: 7
+
+  #=========================================================================
+  # ECR Repositories
+  #=========================================================================
+
+  AccountECR:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: modernbank-repository
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: IMMUTABLE
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+              {
+                "rulePriority": 1,
+                "description": "Remove untagged images after 1 day",
+                "selection": {
+                  "tagStatus": "untagged",
+                  "countType": "sinceImagePushed",
+                  "countUnit": "days",
+                  "countNumber": 1
+                },
+                "action": {
+                  "type": "expire"
+                }
+              },
+              {
+                "rulePriority": 2,
+                "description": "Keep only last 30 images",
+                "selection": {
+                  "tagStatus": "tagged",
+                  "tagPatternList": [".*"],
+                  "countType": "imageCountMoreThan",
+                  "countNumber": 30
+                },
+                "action": {
+                  "type": "expire"
+                }
+              }
+            ]
+          }
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: !Ref Project
+
+Outputs:
+  WorkshopVPCId:
+    Description: Workshop VPC ID
+    Value: !Ref WorkshopVPC
+    Export:
+      Name: !Sub ${AWS::StackName}-WorkshopVPCId
+
+  MSKVPCID:
+    Description: MSK VPC ID
+    Value: !Ref MSKVPC
+    Export:
+      Name: !Sub ${AWS::StackName}-MSKVPCId
+
+  EKSClusterName:
+    Description: EKS Cluster Name
+    Value: !Ref EKSCluster
+    Export:
+      Name: !Sub ${AWS::StackName}-EKSClusterName
+
+  AuroraAccountCluster:
+    Description: Aurora PostgreSQL Cluster for Account Service
+    Value: !Ref AuroraClusterAccount
+
+  AuroraCqrsCluster:
+    Description: Aurora PostgreSQL Cluster for CQRS Service
+    Value: !Ref AuroraClusterCqrs
+
+  AuroraCustomerCluster:
+    Description: Aurora PostgreSQL Cluster for Customer Service
+    Value: !Ref AuroraClusterCustomer
+
+  AuroraTransferCluster:
+    Description: Aurora PostgreSQL Cluster for Transfer Service
+    Value: !Ref AuroraClusterTransfer
+
+  AuroraUserCluster:
+    Description: Aurora PostgreSQL Cluster for User Service
+    Value: !Ref AuroraClusterUser

@@ -1,0 +1,1038 @@
+{
+    "DBInstances": [
+        {
+            "DBInstanceIdentifier": "modernbank-account-instance-1",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-account-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-06T01:06:18.501000+00:00",
+            "PreferredBackupWindow": "19:19-19:49",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                },
+                {
+                    "VpcSecurityGroupId": "sg-0e9ae7965ab449ffd",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2b",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "fri:20:27-fri:20:57",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-account",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-FZO6QARYFWBNEQUSTJVNCQDCKI",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-FZO6QARYFWBNEQUSTJVNCQDCKI",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-account-instance-1",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-06T01:04:57+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-account-instance-1-ap-northeast-2a",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-account-instance-1-ap-northeast-2a.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-06T01:09:58.207000+00:00",
+            "PreferredBackupWindow": "19:19-19:49",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                },
+                {
+                    "VpcSecurityGroupId": "sg-0e9ae7965ab449ffd",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2a",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "thu:14:50-thu:15:20",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-account",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-M2G5TQHFQEDWVRGMLCGGJC2GIM",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-M2G5TQHFQEDWVRGMLCGGJC2GIM",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-account-instance-1-ap-northeast-2a",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-06T01:09:05+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-cqrs-instance-1",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-cqrs-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-04T08:45:15.572000+00:00",
+            "PreferredBackupWindow": "14:58-15:28",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-0c5fd64d26240e350",
+                    "Status": "active"
+                },
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2b",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "fri:16:29-fri:16:59",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-cqrs",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-DNKCWDXYIHFKOYLSOJOXQ43MO4",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-DNKCWDXYIHFKOYLSOJOXQ43MO4",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-cqrs-instance-1",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-04T08:43:56+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-cqrs-instance-1-ap-northeast-2a",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-cqrs-instance-1-ap-northeast-2a.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-04T08:48:51.666000+00:00",
+            "PreferredBackupWindow": "14:58-15:28",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-0c5fd64d26240e350",
+                    "Status": "active"
+                },
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2a",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "fri:18:35-fri:19:05",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-cqrs",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-QSACLNF6YAPGVREBGBVIFTZZZY",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-QSACLNF6YAPGVREBGBVIFTZZZY",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-cqrs-instance-1-ap-northeast-2a",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-04T08:48:00+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-customer-instance-1",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-customer-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-04T08:46:37.460000+00:00",
+            "PreferredBackupWindow": "18:14-18:44",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2b",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "wed:18:18-wed:18:48",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-customer",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-TNG4RKWZKLZUKLRYQ6L55H6KAI",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-TNG4RKWZKLZUKLRYQ6L55H6KAI",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-customer-instance-1",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [
+                {
+                    "Key": "devops-guru-default",
+                    "Value": "modernbank-customer"
+                }
+            ],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-04T08:45:19+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-customer-instance-1-ap-northeast-2a",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-customer-instance-1-ap-northeast-2a.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-04T08:50:14.669000+00:00",
+            "PreferredBackupWindow": "18:14-18:44",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2a",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "wed:13:25-wed:13:55",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-customer",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-ME2AWYBHNHQYVFTQEATO4VQSQI",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-ME2AWYBHNHQYVFTQEATO4VQSQI",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-customer-instance-1-ap-northeast-2a",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [
+                {
+                    "Key": "devops-guru-default",
+                    "Value": "modernbank-customer"
+                }
+            ],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-04T08:49:22+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-transfer-instance-1",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-transfer-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-04T09:15:17.654000+00:00",
+            "PreferredBackupWindow": "16:04-16:34",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2b",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "sat:16:26-sat:16:56",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-transfer",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-SF65VDUJX5OPEQRGJ3NQMCIAVM",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-SF65VDUJX5OPEQRGJ3NQMCIAVM",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-transfer-instance-1",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-04T09:14:04+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-transfer-instance-1-ap-northeast-2a",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-transfer-instance-1-ap-northeast-2a.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-04T09:18:58.236000+00:00",
+            "PreferredBackupWindow": "16:04-16:34",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2a",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "fri:15:09-fri:15:39",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-transfer",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-XEODJBUREHONBW6AX3TZDIELME",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-XEODJBUREHONBW6AX3TZDIELME",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-transfer-instance-1-ap-northeast-2a",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-04T09:18:06+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-user-instance-1",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-user-instance-1.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-06T01:05:02.802000+00:00",
+            "PreferredBackupWindow": "16:32-17:02",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                },
+                {
+                    "VpcSecurityGroupId": "sg-04026a7365d363a76",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2b",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "sun:18:15-sun:18:45",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": true,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-user",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-NE57CA3C2GH264TEYY3HY4OHEM",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-NE57CA3C2GH264TEYY3HY4OHEM",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-user-instance-1",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [
+                {
+                    "Key": "devops-guru-default",
+                    "Value": "modernbank-user"
+                }
+            ],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-06T01:03:43+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        },
+        {
+            "DBInstanceIdentifier": "modernbank-user-instance-1-ap-northeast-2a",
+            "DBInstanceClass": "db.r7g.large",
+            "Engine": "aurora-postgresql",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "postgres",
+            "Endpoint": {
+                "Address": "modernbank-user-instance-1-ap-northeast-2a.cre4cy420rgv.ap-northeast-2.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "ZLA2NUCOLGUUR"
+            },
+            "AllocatedStorage": 1,
+            "InstanceCreateTime": "2025-03-06T01:08:40.195000+00:00",
+            "PreferredBackupWindow": "16:32-17:02",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+                {
+                    "VpcSecurityGroupId": "sg-04026a7365d363a76",
+                    "Status": "active"
+                },
+                {
+                    "VpcSecurityGroupId": "sg-05e9eed630fb1e749",
+                    "Status": "active"
+                }
+            ],
+            "DBParameterGroups": [
+                {
+                    "DBParameterGroupName": "default.aurora-postgresql14",
+                    "ParameterApplyStatus": "in-sync"
+                }
+            ],
+            "AvailabilityZone": "ap-northeast-2a",
+            "DBSubnetGroup": {
+                "DBSubnetGroupName": "modernbank-rdb-subnet-group",
+                "DBSubnetGroupDescription": "modernbank-rdb-subnet-group",
+                "VpcId": "vpc-0737d0e788d6ad0ad",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                    {
+                        "SubnetIdentifier": "subnet-06739ef242ce4867e",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2b"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    },
+                    {
+                        "SubnetIdentifier": "subnet-00d3107331131f8a3",
+                        "SubnetAvailabilityZone": {
+                            "Name": "ap-northeast-2a"
+                        },
+                        "SubnetOutpost": {},
+                        "SubnetStatus": "Active"
+                    }
+                ]
+            },
+            "PreferredMaintenanceWindow": "mon:19:18-mon:19:48",
+            "PendingModifiedValues": {},
+            "MultiAZ": false,
+            "EngineVersion": "14.13",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "OptionGroupMemberships": [
+                {
+                    "OptionGroupName": "default:aurora-postgresql-14",
+                    "Status": "in-sync"
+                }
+            ],
+            "PubliclyAccessible": true,
+            "StorageType": "aurora",
+            "DbInstancePort": 0,
+            "DBClusterIdentifier": "modernbank-user",
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "DbiResourceId": "db-BJJHZD2CLDAB7XRJ527Z6IZZPI",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": false,
+            "MonitoringInterval": 60,
+            "EnhancedMonitoringResourceArn": "arn:aws:logs:ap-northeast-2:216989108269:log-group:RDSOSMetrics:log-stream:db-BJJHZD2CLDAB7XRJ527Z6IZZPI",
+            "MonitoringRoleArn": "arn:aws:iam::216989108269:role/rds-monitoring-role",
+            "PromotionTier": 1,
+            "DBInstanceArn": "arn:aws:rds:ap-northeast-2:216989108269:db:modernbank-user-instance-1-ap-northeast-2a",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:ap-northeast-2:216989108269:key/db756bcf-0530-47c7-afbc-b40fce417ed3",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": false,
+            "AssociatedRoles": [],
+            "TagList": [
+                {
+                    "Key": "devops-guru-default",
+                    "Value": "modernbank-user"
+                }
+            ],
+            "CustomerOwnedIpEnabled": false,
+            "BackupTarget": "region",
+            "NetworkType": "IPV4",
+            "StorageThroughput": 0,
+            "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2026-03-06T01:07:48+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+        }
+    ]
+}

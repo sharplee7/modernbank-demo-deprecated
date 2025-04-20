@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="com.modernbank.cqrs.domain.repository.CQRSRepository">
+
+    <!--
+        Async한 Subscribe Event Raise로 인해 각 테이블의 데이터 누락을 방지하기 위해 INSERT OR UPDATE IF EXIST 로직 적용
+    -->
+    <update id="insertCustomer" parameterType="com.modernbank.cqrs.domain.entity.Customer">
+        INSERT INTO TB_CSTM_CQRS(CSTM_ID, CSTM_NM, CSTM_AGE, CSTM_GND, CSTM_PN, CSTM_ADR)
+        VALUES(#{cstmId}, #{cstmNm}, #{cstmAge}, #{cstmGnd}, #{cstmPn}, #{cstmAdr}) 
+        ON CONFLICT(CSTM_ID)
+        DO UPDATE SET  CSTM_NM=#{cstmNm},CSTM_AGE= #{cstmAge}, CSTM_GND= #{cstmGnd}, CSTM_PN= #{cstmPn},CSTM_ADR= #{cstmAdr}
+    </update>
+
+    <insert id="insertAccount" parameterType="com.modernbank.cqrs.domain.entity.Account">
+		INSERT INTO TB_ACNT_CQRS(ACNT_NO, CSTM_ID, ACNT_NM, NEW_DTM)
+		VALUES(#{acntNo}, #{cstmId}, #{acntNm}, TO_CHAR(CURRENT_TIMESTAMP,'YYYY-MM-DD HH24:MI:SS'))
+    </insert>
+ 
+    <!--
+        Async한 Subscribe Event Raise로 인해 각 테이블의 데이터 누락을 방지하기 위해 INSERT OR UPDATE IF EXIST 로직 적용
+    --> 
+    <update id="updateTransferLimit" parameterType="com.modernbank.cqrs.domain.entity.Customer">
+        INSERT INTO TB_CSTM_CQRS (CSTM_ID, ONE_TM_TRNF_LMT, ONE_DY_TRNF_LMT) VALUES(#{cstmId}, #{oneTmTrnfLmt}, #{oneDyTrnfLmt})
+        ON CONFLICT(CSTM_ID)
+        DO UPDATE SET ONE_TM_TRNF_LMT = #{oneTmTrnfLmt}, ONE_DY_TRNF_LMT = #{oneDyTrnfLmt}
+    </update>
+    
+    <update id="updateAccountBalance" parameterType="com.modernbank.cqrs.domain.entity.Account">
+        UPDATE TB_ACNT_CQRS SET ACNT_BLNC = ${acntBlnc} WHERE ACNT_NO = #{acntNo};
+    </update>  
+    
+    
+ 	<select id="selectCustomer" resultType="com.modernbank.cqrs.domain.entity.Customer" parameterType="com.modernbank.cqrs.domain.entity.Customer">
+ 		SELECT CSTM_ID, CSTM_NM, CSTM_AGE, CSTM_GND, CSTM_PN, CSTM_ADR, ONE_TM_TRNF_LMT, ONE_DY_TRNF_LMT
+ 		FROM TB_CSTM_CQRS
+ 		WHERE CSTM_ID = #{cstmId}
+ 	</select>
+ 	<select id="selectAccountList" resultType="com.modernbank.cqrs.domain.entity.Account" parameterType="com.modernbank.cqrs.domain.entity.Account">
+ 		SELECT ACNT_NO, CSTM_ID, ACNT_NM, NEW_DTM, ACNT_BLNC
+ 		FROM TB_ACNT_CQRS
+ 		WHERE CSTM_ID = #{cstmId}
+ 	</select>
+	
+</mapper>

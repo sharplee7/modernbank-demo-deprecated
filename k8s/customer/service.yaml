@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: modernbank-customer
+  namespace: modernbank
+spec:
+  selector:
+    app: modernbank-customer
+    project: modernbank
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
+  type: ClusterIP

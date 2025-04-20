@@ -1,0 +1,8 @@
+# service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: modernbank-b2bt-sa
+  namespace: modernbank
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::216989108269:role/modernbank-services-role

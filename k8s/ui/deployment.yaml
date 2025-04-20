@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modernbank
+  namespace: modernbank
+  labels:
+    app: modernbank
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: modernbank
+  template:
+    metadata:
+      labels:
+        app: modernbank
+    spec:
+      serviceAccountName: modernbank-sa
+      containers:
+      - name: modernbank
+        image: 216989108269.dkr.ecr.ap-northeast-2.amazonaws.com/modernbank-ui:latest  # ECR 이미지 주소
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_AUTH
+          value: "/modernbank"
+        - name: NEXT_PUBLIC_CUSTOMER
+          value: "/modernbank/customer"
+        - name: NEXT_PUBLIC_TRANSFER
+          value: "/modernbank/transfer"
+        - name: NEXT_PUBLIC_ACCOUNT
+          value: "/modernbank/account"
+        - name: NEXT_PUBLIC_CQRS
+          value: "/modernbank/cqrs"
+        - name: NEXT_PUBLIC_PRODUCT
+          value: "/modernbank/product"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
