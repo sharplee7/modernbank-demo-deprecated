@@ -35,6 +35,8 @@ out/
 ### Garbage file ###
 *.pid
 *.log
+*.lock
+*.probe
 
 ### next.js ###
 **/node_modules/**
