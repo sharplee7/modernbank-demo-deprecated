@@ -72,10 +72,7 @@ public class TransferService {
 
     @Transactional(rollbackFor = Exception.class)
     public int createTransferLimit(TransferLimit transferLimit) throws Exception {
-        logger.info("send transferlimit start...");
-    	transferProducer.sendUpdatingTansferLimitMessage(transferLimit);
-        logger.info("send transferlimit done...");
-    	return transferRepository.insertTransferLimit(transferLimit);
+        // TODO
     }
 
     public TransferLimit retrieveTransferLimit(String cstmId) throws Exception {
@@ -245,25 +242,7 @@ public class TransferService {
             
         return true;
     }
-/*
-    @CircuitBreaker(name = "accountService", fallbackMethod = "fallbackPerformWithdrawalForBtob")
-    @Retry(name = "accountService")
-    private TransactionResult performWithdrawalForBtob(String acntNo, Long amount, String branch) {
-        TransactionHistory transaction = TransactionHistory.builder()
-            .acntNo(acntNo)
-            .trnsAmt(amount)
-            .trnsBrnch(branch)
-            .build();
-        System.out.println("===> before account service rest call(/withdrawals) on TransferService \n" + ObjectToJsonConverter.convertSettersToJson(transaction));   
-        
-        return restTemplate.postForObject(accountServiceUrl + "/withdrawals/", transaction, TransactionResult.class);
-    }
 
-    private TransactionResult fallbackPerformWithdrawalForBtob(String acntNo, Long amount, String branch, Exception e) {
-        logger.error("Failed to perform withdrawal for B2B transfer, account: " + acntNo, e);
-        throw new SystemException("The following issue occurred while Transfer Service was making a RESTful call to Account Service to perform withdrawal for B2B transfer.\n" + e.getMessage());
-    }
- */	
     private int retrieveMaxSeq(String cstmId) throws Exception {
         TransferHistory transferHistory = new TransferHistory();
         transferHistory.setCstmId(cstmId);
