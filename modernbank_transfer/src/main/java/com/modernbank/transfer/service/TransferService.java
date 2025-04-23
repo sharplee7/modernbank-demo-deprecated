@@ -117,25 +117,20 @@ public class TransferService {
         String cstmId = transferHistory.getCstmId();
         int seq = retrieveMaxSeq(cstmId) + 1;
         
-        System.out.println("-----> 1");
         Account depositAccountInfo = retrieveAccountInfo(dpstAcntNo);
         rcvCstmNm = depositAccountInfo.getCstmNm();
         
-        System.out.println("-----> 2");
         transferHistory.setRcvCstmNm(rcvCstmNm);
         transferHistory.setSeq(seq);
         transferHistory.setDivCd("D");
         transferHistory.setStsCd("1");
         createTransferHistory(transferHistory);
         
-        System.out.println("-----> 3");
         // 내부 이체의 경우 '0' 즉, 팬딩 처리 없이 바로 출금 성공 처리(1)를 한다.
         performWithdrawal(wthdAcntNo, trnfAmt, sndMm,transferHistory.getDivCd(), transferHistory.getStsCd());
 
-        System.out.println("-----> 4");
         performDeposit(dpstAcntNo, trnfAmt, rcvMm);
 
-        System.out.println("-----> 5");
         transferHistory.setStsCd("3");
         createTransferHistory(transferHistory);
         transferProducer.sendCQRSTransferMessage(transferHistory);
@@ -168,26 +163,10 @@ public class TransferService {
         performWithdrawal(acntNo, amount, branch, null, null);
     }
     
-
-
     @CircuitBreaker(name = "accountService", fallbackMethod = "fallbackPerformWithdrawal")
     @Retry(name = "accountService")
     private TransactionResult performWithdrawal(String acntNo, Long amount, String branch, String divCd, String stsCd) {
-        TransactionHistory.TransactionHistoryBuilder builder = TransactionHistory.builder()
-            .acntNo(acntNo)
-            .trnsAmt(amount)
-            .trnsBrnch(branch);
-    
-        if (divCd != null) {
-            builder.divCd(divCd);
-        }
-        if (stsCd != null) {
-            builder.stsCd(stsCd);
-        }
-    
-        TransactionHistory transaction = builder.build();
-        
-        return restTemplate.postForObject(accountServiceUrl + "/withdrawals/", transaction, TransactionResult.class);
+        // TODO
     }
 
     private void fallbackPerformWithdrawal(String acntNo, Long amount, String branch, Exception e) {
@@ -221,10 +200,6 @@ public class TransferService {
         int seq = retrieveMaxSeq(cstmId) + 1;
         
         transfer.setSeq(seq);
-
-        // transfer.setDivCd("2");
-        // transfer.setStsCd("0");
-        
         
         // TB_TRNF_HST 테이블에 이체 이력 남기기
         createTransferHistory(transfer);
@@ -245,25 +220,7 @@ public class TransferService {
             
         return true;
     }
-/*
-    @CircuitBreaker(name = "accountService", fallbackMethod = "fallbackPerformWithdrawalForBtob")
-    @Retry(name = "accountService")
-    private TransactionResult performWithdrawalForBtob(String acntNo, Long amount, String branch) {
-        TransactionHistory transaction = TransactionHistory.builder()
-            .acntNo(acntNo)
-            .trnsAmt(amount)
-            .trnsBrnch(branch)
-            .build();
-        System.out.println("===> before account service rest call(/withdrawals) on TransferService \n" + ObjectToJsonConverter.convertSettersToJson(transaction));   
-        
-        return restTemplate.postForObject(accountServiceUrl + "/withdrawals/", transaction, TransactionResult.class);
-    }
 
-    private TransactionResult fallbackPerformWithdrawalForBtob(String acntNo, Long amount, String branch, Exception e) {
-        logger.error("Failed to perform withdrawal for B2B transfer, account: " + acntNo, e);
-        throw new SystemException("The following issue occurred while Transfer Service was making a RESTful call to Account Service to perform withdrawal for B2B transfer.\n" + e.getMessage());
-    }
- */	
     private int retrieveMaxSeq(String cstmId) throws Exception {
         TransferHistory transferHistory = new TransferHistory();
         transferHistory.setCstmId(cstmId);

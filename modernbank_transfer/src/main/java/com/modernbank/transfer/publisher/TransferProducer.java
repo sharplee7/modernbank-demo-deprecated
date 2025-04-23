@@ -5,8 +5,6 @@ import java.util.concurrent.CompletableFuture;
 import com.modernbank.transfer.domain.entity.TransferHistory;
 import com.modernbank.transfer.domain.entity.TransferLimit;
 import com.modernbank.transfer.exception.SystemException;
-import com.modernbank.transfer.rest.account.entity.TransactionHistory;
-import com.modernbank.transfer.utils.ObjectToJsonConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,40 +42,7 @@ public class TransferProducer {
     private String accountServiceUrl;
 
     public void sendB2BTransferMessage(TransferHistory transfer) {
-        System.out.println("===> start sendB2BTransferMessage at TransferProducer\n" + ObjectToJsonConverter.convertSettersToJson(transfer) + "\n");
-
-        CompletableFuture<SendResult<String, TransferHistory>> future = transferKafkaTemplate.send(b2bTransferTopicName, transfer);
-
-        future.whenComplete((result, ex) -> {
-            if (ex == null) {
-                TransferHistory g = result.getProducerRecord().value();
-                LOGGER.info("Sent message=[" + g.getCstmId() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
-            } else {
-                //보상 트랜잭션 시작
-
-                transfer.setStsCd("2");
-                System.out.println("====> Starting compensation transaction call due to inter-bank transfer failure. ");
-                String wthdAcntNo = transfer.getWthdAcntNo();
-                int wthdAcntSeq = transfer.getWthdAcntSeq();
-                TransactionHistory transactionHistory = TransactionHistory.builder()
-                    .acntNo(wthdAcntNo)
-                    .seq(wthdAcntSeq)
-                    .divCd("2")
-                    .stsCd("2")
-                    .build();
-  
-                restTemplate.postForObject(
-                    accountServiceUrl + "/withdrawals/cancel/",
-                    transactionHistory,
-                    Integer.class
-                );
-
-                System.out.println("====> Ending compensation transaction call due to inter-bank transfer failure. ");
-
-                LOGGER.error("Unable to send message=[" + transfer.getCstmId() + "] due to : " + ex.getMessage());
-                throw new SystemException("Kafka data transmission error");
-            }
-        });
+        // TODO
     }
     
     public void sendUpdatingTansferLimitMessage(TransferLimit transferLimit) {
