@@ -3,11 +3,13 @@ package com.modernbank.customer.controller;
 
 import com.modernbank.customer.domain.entity.Customer;
 import com.modernbank.customer.service.CustomerService;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 
@@ -20,7 +22,6 @@ public class CustomerController {
     @Operation(summary = "Customer Registration", method = "POST", description = "Register a new customer")
     @RequestMapping(method = RequestMethod.POST, path = "/")
     public Integer createCustomer(@RequestBody Customer customer) throws Exception{
-        System.out.println("-----> 1.Controller request...");
          return customerService.createCustomer(customer);
     }
 

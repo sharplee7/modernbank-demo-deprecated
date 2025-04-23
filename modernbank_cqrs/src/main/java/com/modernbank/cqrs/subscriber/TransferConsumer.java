@@ -28,7 +28,7 @@ public class TransferConsumer {
     public void updatingTransferLimitListener(Customer customer, Acknowledgment ack) {
         LOGGER.info("Received updating transfer limit message: " + customer.getCstmId());
         try {
-            System.out.println("============> The transfer limit listener is being triggered.");        
+            LOGGER.info(" The transfer limit listener is being triggered.");        
             cqrsService.updateTransferLimit(customer);
             
             ack.acknowledge();

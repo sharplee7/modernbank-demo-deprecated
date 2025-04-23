@@ -59,9 +59,8 @@ public class CustomerService {
         customerRepository.insertCustomer(customer);
 
         try {
-            System.out.println("---> called Customer Service create Customer, before restCall");
             setTransferLimits(customer);
-            System.out.println("---> called Customer Service create Customer, after restCall");
+            logger.info("---> called Customer Service create Customer, after restCall");
         } catch (Exception e) {
             logger.error("Failed to set transfer limits: " + e.getMessage());
             throw new BusinessException("The RESTful call to Transfer Service has failed. Canceling Customer service registration\nFailed to set transfer limits: " + e.getMessage());
