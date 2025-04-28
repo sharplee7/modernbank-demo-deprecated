@@ -37,7 +37,10 @@ out/
 *.log
 *.lock
 *.probe
+front_userdata.sh
+modernbank-ui-key.pem
 
 ### next.js ###
 **/node_modules/**
 **/.next/**
+
