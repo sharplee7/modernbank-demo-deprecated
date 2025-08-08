@@ -70,7 +70,13 @@ export default function TransferHistory() {
         throw new Error("이체 내역 데이터 형식이 올바르지 않습니다.");
       }
 
-      setTransferHistory(data);
+      const sortedByLatest = [...data].sort((a: TransferRecord, b: TransferRecord) => {
+        // 날짜 문자열 파싱이 안전하도록 공백을 'T'로 치환하여 파싱 시도
+        const aTime = new Date(a.trnfDtm.replace(' ', 'T')).getTime();
+        const bTime = new Date(b.trnfDtm.replace(' ', 'T')).getTime();
+        return bTime - aTime; // 최신 우선
+      });
+      setTransferHistory(sortedByLatest);
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "이체 내역 조회 중 오류가 발생했습니다.";
       showModal("오류", errorMessage);
